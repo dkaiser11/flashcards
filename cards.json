@@ -1,0 +1,25 @@
+{
+    "learned": 0,
+    "boxes": 
+    [
+        {
+            "repetition_time": 1,
+            "cards": []
+        },
+        {
+            "repetition_time": 3,
+            "cards": []
+        },
+        {
+            "repetition_time": 7,
+            "cards": []
+        },
+        {
+            "repetition_time": 30,
+            "cards": []
+        },
+        {
+            "cards": []
+        }
+    ]
+}
