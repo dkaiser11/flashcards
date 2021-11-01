@@ -1,7 +1,6 @@
 {
     "learned": 0,
-    "boxes": 
-    [
+    "boxes": [
         {
             "repetition_time": 1,
             "cards": []
