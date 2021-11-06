@@ -76,11 +76,22 @@ with WebDriver() as driver:
             else:
                 move(card, i, i + 1)
 
-    if input_ == "add":
-        add()
+    # load all boxes
+    def load_all():
         for i in range(len(data["boxes"]) - 1, -1, -1):
             day = int(datetime.datetime.now().strftime("%j"))
             if day % box(i)["repetition_time"] == 0:
                 load(i)
-    else:
+
+    if input_ == "a":
+        add()
+    if input_ == "lf":
         load(0)
+    if input_ == "alf":
+        add()
+        load(0)
+    if input_ == "la":
+        load_all()
+    else:
+        add()
+        load_all()
