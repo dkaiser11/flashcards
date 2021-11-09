@@ -1,9 +1,11 @@
 import datetime
 import json
 import random
+import os
 
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
 
 BASE_URL = "https://www.kanjidamage.com/kanji/"
 
@@ -51,7 +53,10 @@ def move(card: int, i: int, j: int):
 
 input_ = input()
 
-with WebDriver() as driver:
+options = Options()
+options.add_argument("--log-level=3")
+
+with WebDriver(chrome_options=options) as driver:
     # load kanji list
     def load_main():
         driver.get(BASE_URL)
@@ -63,8 +68,10 @@ with WebDriver() as driver:
         for card in random.sample(box_["cards"], len(box_["cards"])):
             load_main()
             number = driver.find_element(
-                By.XPATH, f"//td[contains(text(), '{card}')]")
+                By.XPATH, f"//td[contains(text(), '{card if card <= 5 else card - 5}')]")
             number.location_once_scrolled_into_view
+
+            os.system("cls")
             print(str(card))
             input()
             driver.get(BASE_URL + str(card))
