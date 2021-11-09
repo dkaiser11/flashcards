@@ -68,7 +68,7 @@ with WebDriver(chrome_options=options) as driver:
         for card in random.sample(box_["cards"], len(box_["cards"])):
             load_main()
             number = driver.find_element(
-                By.XPATH, f"//td[contains(text(), '{card if card <= 5 else card - 5}')]")
+                By.XPATH, f"//td[contains(text(), '{card if card == 1 else card - 1}')]")
             number.location_once_scrolled_into_view
 
             os.system("cls")
