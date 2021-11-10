@@ -56,7 +56,7 @@ input_ = input()
 options = Options()
 options.add_argument("--log-level=3")
 
-with WebDriver(chrome_options=options) as driver:
+with WebDriver(options=options) as driver:
     # load kanji list
     def load_main():
         driver.get(BASE_URL)
@@ -76,6 +76,10 @@ with WebDriver(chrome_options=options) as driver:
             input()
             driver.get(BASE_URL + str(card))
 
+            number = driver.find_element(
+                By.XPATH, f"//a[contains(text(), 'Next')]")
+            number.location_once_scrolled_into_view
+
             # sort cards by if they were learned
             known = input()
             if known == "no" or known == "n":
@@ -92,12 +96,12 @@ with WebDriver(chrome_options=options) as driver:
 
     if input_ == "a":
         add()
-    if input_ == "lf":
+    elif input_ == "lf":
         load(0)
-    if input_ == "alf":
+    elif input_ == "alf":
         add()
         load(0)
-    if input_ == "la":
+    elif input_ == "la":
         load_all()
     else:
         add()
