@@ -67,14 +67,17 @@ with WebDriver(options=options) as driver:
             By.XPATH, f"//td[contains(text(), '{card if card == 1 else card - 1}')]")
         number.location_once_scrolled_into_view
 
-        input()
+        input("Hit any key when ready")
+        cls()
+
         driver.get(BASE_URL + str(card))
 
         number = driver.find_element(
             By.XPATH, f"//a[contains(text(), 'Next')]")
         number.location_once_scrolled_into_view
 
-        learned = input()
+        learned = input("Did you know the answer? (y/n) ")
+        cls()
 
         options = {
             "": 1,
@@ -91,7 +94,7 @@ with WebDriver(options=options) as driver:
 
     cls()
 
-    mode = input()
+    mode = input("What mode do you want to start in? \n")
 
     modes = {
         "a": [add, quit],
