@@ -9,6 +9,13 @@ from selenium.webdriver.chrome.options import Options
 from data_models import *
 
 
+def input_(prompt: str) -> str:
+    input_read = input(prompt)
+    if input_read == "q":
+        quit()
+    return input_read
+
+
 def cls() -> None:
     os.system("cls")
 
@@ -56,7 +63,7 @@ with WebDriver(options=options) as driver:
     def load_all() -> None:
         data_ = Data(data.to_json())
         for i in range(len(data_.boxes)):
-            if data_.learned % data_.boxes[i].repetition_time:
+            if data_.learned % data_.boxes[i].repetition_time == 0:
                 load(i, data_)
 
     def learn(card: int, i: int) -> None:
@@ -67,16 +74,18 @@ with WebDriver(options=options) as driver:
             By.XPATH, f"//td[contains(text(), '{card if card == 1 else card - 1}')]")
         number.location_once_scrolled_into_view
 
-        input("Hit any key when ready")
+        input_("Hit any key when ready")
         cls()
 
-        driver.get(BASE_URL + str(card))
+        link = driver.find_element(
+            By.XPATH, f"//td[contains(text(), '{card}')]").find_element(By.XPATH, "./..").find_element(By.TAG_NAME, "a").get_attribute("href")
+        driver.get(link)
 
         number = driver.find_element(
             By.XPATH, f"//a[contains(text(), 'Next')]")
         number.location_once_scrolled_into_view
 
-        learned = input("Did you know the answer? (y/n) ")
+        learned = input_("Did you know the answer? (y/n) \n")
         cls()
 
         options = {
@@ -94,7 +103,7 @@ with WebDriver(options=options) as driver:
 
     cls()
 
-    mode = input("What mode do you want to start in? \n")
+    mode = input_("What mode do you want to start in? (q to quit) \n")
 
     modes = {
         "a": [add, quit],
