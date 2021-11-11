@@ -1,3 +1,4 @@
+import pathlib
 import random
 import os
 
@@ -13,7 +14,7 @@ def cls() -> None:
 
 
 BASE_URL = "https://www.kanjidamage.com/kanji/"
-PATH = "cards.json"
+PATH = str(pathlib.Path().resolve()) + "\\cards.json"
 
 with open(PATH, "r") as rdoc:
     try:
