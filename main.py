@@ -97,7 +97,9 @@ with WebDriver(options=options) as driver:
         "a": [add, quit],
         "al": [add, load],
         "l": [load],
-        "": [add, load_all]
+        "ala": [add, load_all],
+        "la": [load_all],
+        "": [load_all]
     }
 
     [func() for func in modes[mode]]
