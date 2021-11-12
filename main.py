@@ -106,21 +106,20 @@ with WebDriver(options=options) as driver:
 
         driver.get(BASE_URL)
 
-    driver.get(BASE_URL)
+    while True:
+        driver.get(BASE_URL)
 
-    cls()
+        cls()
 
-    mode = input_("What mode do you want to start in? (q to quit) \n")
+        mode = input_("What mode do you want to start in? (q to quit) \n")
 
-    modes = {
-        "a": [add],
-        "al": [add, load_all],
-        "an": [add, load_new],
-        "": [load_all],
-        "l": [load_all],
-        "n": [load_new]
-    }
+        modes = {
+            "a": [add],
+            "al": [add, load_all],
+            "an": [add, load_new],
+            "": [load_all],
+            "l": [load_all],
+            "n": [load_new]
+        }
 
-    [func() for func in modes[mode]]
-
-quit()
+        [func() for func in modes[mode]]
