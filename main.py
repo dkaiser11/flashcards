@@ -70,8 +70,9 @@ with WebDriver(options=options) as driver:
         cls()
         print(card)
 
-        number = driver.find_element(
-            By.XPATH, f"//td[contains(text(), '{card if card == 1 else card - 1}')]")
+        if card != 1:
+            number = driver.find_element(
+                By.XPATH, f"//td[contains(text(), '{card}')]")
         number.location_once_scrolled_into_view
 
         input_("Hit any key when ready")
