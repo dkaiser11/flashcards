@@ -30,6 +30,17 @@ class Data:
         self.boxes[i].cards.remove(card)
         self.boxes[j].cards.append(card)
 
+    def new(self):
+        new = range(10*(self.learned - 1) + 1, 10*self.learned + 1)
+        data_ = Data()
+        data_.learned = self.learned
+        for i, box in enumerate(self.boxes):
+            data_.boxes[i].repetition_time = 1
+            for card in box.cards:
+                if card in new:
+                    data_.boxes[i].cards.append(card)
+        return data_
+
 
 class Box:
     def __init__(self, repetition_time: int, cards: list = None) -> None:

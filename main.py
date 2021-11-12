@@ -50,7 +50,7 @@ options = Options()
 options.add_argument("--log-level=3")
 
 with WebDriver(options=options) as driver:
-    def load(i: int = None, data_: Data = None) -> None:
+    def load(i: int = None, data_: Data = None, move_: bool = True) -> None:
         i = 0 if i == None else i
 
         data_ = Data(data.to_json()) if data_ == None else data_
@@ -58,15 +58,20 @@ with WebDriver(options=options) as driver:
         cards_ = list(random.sample(box_.cards, len(box_.cards)))
 
         for card in cards_:
-            learn(card, i)
+            learn(card, i, move_)
 
-    def load_all() -> None:
-        data_ = Data(data.to_json())
+    def load_new() -> None:
+        load_all(data.new(), False)
+
+    def load_all(data_: Data = None, move_: bool = True) -> None:
+        if data_ == None:
+            data_ = Data(data.to_json())
+
         for i in range(len(data_.boxes)):
             if data_.learned % data_.boxes[i].repetition_time == 0:
-                load(i, data_)
+                load(i, data_, move_)
 
-    def learn(card: int, i: int) -> None:
+    def learn(card: int, i: int, move_: bool = True) -> None:
         cls()
         print(card)
 
@@ -96,7 +101,8 @@ with WebDriver(options=options) as driver:
             "n": -1
         }
 
-        move(card, i, i + options[learned])
+        if move_:
+            move(card, i, i + options[learned])
 
         driver.get(BASE_URL)
 
@@ -108,12 +114,11 @@ with WebDriver(options=options) as driver:
 
     modes = {
         "a": [add],
-        "al": [add, load],
-        "l": [load],
-        "lf": [load],
-        "ala": [add, load_all],
-        "la": [load_all],
-        "": [load_all]
+        "al": [add, load_all],
+        "an": [add, load_new],
+        "": [load_all],
+        "l": [load_all],
+        "n": [load_new]
     }
 
     [func() for func in modes[mode]]
