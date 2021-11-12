@@ -72,7 +72,7 @@ with WebDriver(options=options) as driver:
 
         if card != 1:
             number = driver.find_element(
-                By.XPATH, f"//td[contains(text(), '{card}')]")
+                By.XPATH, f"//td[contains(text(), '{card - 1}')]")
         number.location_once_scrolled_into_view
 
         input_("Hit any key when ready")
@@ -107,12 +107,15 @@ with WebDriver(options=options) as driver:
     mode = input_("What mode do you want to start in? (q to quit) \n")
 
     modes = {
-        "a": [add, quit],
+        "a": [add],
         "al": [add, load],
         "l": [load],
+        "lf": [load],
         "ala": [add, load_all],
         "la": [load_all],
         "": [load_all]
     }
 
     [func() for func in modes[mode]]
+
+quit()
