@@ -63,13 +63,20 @@ with WebDriver(options=options) as driver:
     def load_new() -> None:
         load_all(data.new(), False)
 
-    def load_all(data_: Data = None, move_: bool = True) -> None:
+    def load_session(data_: Data = None, move_: bool = True) -> None:
         if data_ == None:
             data_ = Data(data.to_json())
 
         for i in range(len(data_.boxes)):
             if data_.learned % data_.boxes[i].repetition_time == 0:
                 load(i, data_, move_)
+
+    def load_all(data_: Data = None, move_: bool = True):
+        if data_ == None:
+            data_ = Data(data.to_json())
+
+        for i in range(len(data_.boxes)):
+            load(i)
 
     def learn(card: int, i: int, move_: bool = True) -> None:
         cls()
@@ -111,15 +118,17 @@ with WebDriver(options=options) as driver:
 
         cls()
 
-        mode = input_("What mode do you want to start in? (q to quit) \n")
+        mode = input_(
+            "What mode do you want to start in? \n(a: add, l: load session, n: load new (no progress), la: load all, q: quit) \n")
 
         modes = {
             "a": [add],
-            "al": [add, load_all],
+            "al": [add, load_session],
             "an": [add, load_new],
-            "": [load_all],
-            "l": [load_all],
-            "n": [load_new]
+            "": [load_session],
+            "l": [load_session],
+            "n": [load_new],
+            "la": [load_all]
         }
 
         [func() for func in modes[mode]]
