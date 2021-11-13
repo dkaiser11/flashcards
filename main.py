@@ -23,12 +23,12 @@ def cls() -> None:
 BASE_URL = "https://www.kanjidamage.com/kanji/"
 PATH = str(pathlib.Path().resolve()) + "\\cards.json"
 
-with open(PATH, "r") as rdoc:
-    try:
+try:
+    with open(PATH, "r") as rdoc:
         data = Data(rdoc.read())
-    except:
-        with open(PATH, "w") as wdoc:
-            wdoc.write(Data().to_json())
+except:
+    with open(PATH, "w") as wdoc:
+        wdoc.write(Data().to_json())
 
 
 def update():
