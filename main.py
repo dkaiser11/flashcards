@@ -82,6 +82,19 @@ with WebDriver(options=options) as driver:
         cls()
         print(card)
 
+        row_elements = driver.find_element(
+            By.XPATH, f"//td[contains(text(), '{card}')]").find_element(By.XPATH, "./..").find_elements(By.CSS_SELECTOR, "*")
+
+        for j, row_element in enumerate(row_elements):
+            if len(row_element.find_elements(By.TAG_NAME, "a")) != 0:
+                txt = row_elements[j + 2]
+                break
+
+        driver.execute_script("""
+            var txt = arguments[0];
+            txt.parentNode.removeChild(txt);
+            """, txt)
+
         if card != 1:
             number = driver.find_element(
                 By.XPATH, f"//td[contains(text(), '{card - 1}')]")
