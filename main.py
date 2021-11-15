@@ -1,13 +1,14 @@
+import os
 import pathlib
 import random
-import os
+from copy import deepcopy
+from time import sleep
 
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options
 
 from data_models import Data
-from copy import deepcopy
 
 
 def input_(prompt: str) -> str:
@@ -145,4 +146,9 @@ with WebDriver(options=options) as driver:
             "la": [load_all]
         }
 
-        [func() for func in modes[mode]]
+        try:
+            [func() for func in modes[mode]]
+        except Exception:
+            cls()
+            print("Please use a valid input")
+            sleep(1)
