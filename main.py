@@ -84,13 +84,8 @@ with WebDriver(options=options) as driver:
         cls()
         print(card)
 
-        row_elements = driver.find_element(
-            By.XPATH, f"//td[contains(text(), '{card}')]").find_element(By.XPATH, "./..").find_elements(By.CSS_SELECTOR, "*")
-
-        for j, row_element in enumerate(row_elements):
-            if len(row_element.find_elements(By.TAG_NAME, "a")) != 0:
-                txt = row_elements[j + 2]
-                break
+        txt = driver.find_element(
+            By.XPATH, f"//tr/td[1][contains(text(), '{card}')]/../*[4]")
 
         driver.execute_script("""
             var txt = arguments[0];
@@ -99,19 +94,19 @@ with WebDriver(options=options) as driver:
 
         if card != 1:
             number = driver.find_element(
-                By.XPATH, f"//td[contains(text(), '{card - 1}')]")
+                By.XPATH, f"//tr/td[1][contains(text(), '{card - 1}')]")
             number.location_once_scrolled_into_view
 
         input_("Hit any key when ready")
         cls()
 
         link = driver.find_element(
-            By.XPATH, f"//td[contains(text(), '{card}')]").find_element(By.XPATH, "./..").find_element(By.TAG_NAME, "a").get_attribute("href")
+            By.XPATH, f"//tr/td[1][contains(text(), '{card}')]/../td/a").get_attribute("href")
         driver.get(link)
 
-        number = driver.find_element(
+        next_ = driver.find_element(
             By.XPATH, f"//a[contains(text(), 'Next')]")
-        number.location_once_scrolled_into_view
+        next_.location_once_scrolled_into_view
 
         learned = input_("Did you know the answer? (y/n) \n")
         cls()
@@ -134,7 +129,7 @@ with WebDriver(options=options) as driver:
         cls()
 
         mode = input_(
-            "What mode do you want to start in? \n(a: add, l: load session, n: load new (no progress), la: load all, q: quit) \n")
+            f"What mode do you want to start in? ({len(data.boxes[0].cards)} in first box) \n(a: add, l: load session, n: load new (no progress), la: load all, q: quit) \n")
 
         modes = {
             "a": [add],
