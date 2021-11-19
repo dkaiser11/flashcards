@@ -5,7 +5,7 @@ class Data:
     def __init__(self, json_: str = None) -> None:
         if json_ == None:
             self.learned = 0
-            self.boxes = [Box(i) for i in [1, 3, 7, 30, 100, 1000]]
+            self.boxes = [Box(i) for i in [1, 3, 7, 30, 100, 10000]]
         else:
             json_ = json.loads(json_)
             self.learned = json_["learned"]
@@ -40,6 +40,16 @@ class Data:
                 if card in new:
                     data_.boxes[i].cards.append(card)
         return data_
+
+    def clean(self):
+        for card in range(1, 10*self.learned + 1):
+            occurrences = []
+            for i, box in enumerate(self.boxes):
+                if card in box.cards:
+                    occurrences.append(i)
+            occurrences.remove(occurrences[-1])
+            for i in occurrences:
+                self.boxes[i].cards.remove(card)
 
 
 class Box:

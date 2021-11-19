@@ -34,6 +34,7 @@ except Exception:
 
 
 def update():
+    data.clean()
     with open(PATH, "w") as wdoc:
         wdoc.write(data.to_json())
 
