@@ -34,7 +34,7 @@ except Exception:
 
 
 def update():
-    data.clean()
+    clean()
     with open(PATH, "w") as wdoc:
         wdoc.write(data.to_json())
 
@@ -49,6 +49,10 @@ def move(card: int, i: int, j: int) -> None:
     update()
 
 
+def clean() -> None:
+    data.clean()
+
+
 options = Options()
 options.add_argument("--log-level=3")
 
@@ -59,9 +63,11 @@ with WebDriver(options=options) as driver:
         data_ = deepcopy(data) if data_ == None else data_
         box_ = data_.boxes[i]
         cards_ = random.sample(box_.cards, len(box_.cards))
+        left = len(cards_)
 
         for card in cards_:
-            learn(card, i, move_)
+            learn(card, i, left, move_)
+            left -= 1
 
     def load_new() -> None:
         load_all(data.new(), False)
@@ -81,9 +87,10 @@ with WebDriver(options=options) as driver:
         for i in range(len(data_.boxes)):
             load(i, data_, move_)
 
-    def learn(card: int, i: int, move_: bool = True) -> None:
+    def learn(card: int, i: int, left: int, move_: bool = True) -> None:
         cls()
         print(card)
+        print(f"\nCards left in this box: {left}")
 
         txt = driver.find_element(
             By.XPATH, f"//tr/td[1][contains(text(), '{card}')]/../*[4]")
@@ -129,8 +136,12 @@ with WebDriver(options=options) as driver:
 
         cls()
 
-        mode = input_(
-            f"What mode do you want to start in? ({len(data.boxes[0].cards)} in first box) \n(a: add, l: load session, n: load new (no progress), la: load all, q: quit) \n")
+        mode = input_("\n".join([
+            data.stats(),
+            "",
+            "What mode do you want to start in?",
+            "(a: add, l: load session, n: load new (no progress), la: load all, q: quit) \n\n"
+        ]))
 
         modes = {
             "a": [add],
@@ -139,7 +150,8 @@ with WebDriver(options=options) as driver:
             "": [load_session],
             "l": [load_session],
             "n": [load_new],
-            "la": [load_all]
+            "la": [load_all],
+            "c": [clean]
         }
 
         try:

@@ -41,7 +41,7 @@ class Data:
                     data_.boxes[i].cards.append(card)
         return data_
 
-    def clean(self):
+    def clean(self) -> None:
         for card in range(1, 10*self.learned + 1):
             occurrences = []
             for i, box in enumerate(self.boxes):
@@ -50,6 +50,12 @@ class Data:
             occurrences.remove(occurrences[-1])
             for i in occurrences:
                 self.boxes[i].cards.remove(card)
+
+    def stats(self) -> str:
+        return "\n".join([
+            f"total learned: {10 * self.learned}",
+            f"boxes: {', '.join([f'{i + 1}: {len(box.cards)}' for i, box in enumerate(self.boxes)])}"
+        ])
 
 
 class Box:
